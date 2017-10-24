@@ -13,31 +13,31 @@ class LyricLine():
     def shift(self, minutes=0, seconds=0, milliseconds=0):
         """Shift the timecode by the given amounts"""
         
-        self.addMillis(milliseconds)
-        self.addSeconds(seconds)
         self.addMinutes(minutes)
+        self.addSeconds(seconds)
+        self.addMillis(milliseconds)
             
     def addMillis(self, milliseconds):
         summation = self.milliseconds + milliseconds
         if summation > 999 or summation < 0:
-            self.milliseconds = (self.milliseconds + milliseconds) % 1000
             self.addSeconds(int((self.milliseconds + milliseconds) / 1000))
+            self.milliseconds = (self.milliseconds + milliseconds) % 1000
         else:
             self.milliseconds = summation
     
     def addSeconds(self, seconds):
         summation = self.seconds + seconds
         if summation > 59 or summation < 0:
-            self.seconds = (self.seconds + seconds) % 60
             self.addMinutes(int((self.seconds + seconds) / 60))
+            self.seconds = (self.seconds + seconds) % 60
         else:
             self.seconds = summation
     
     def addMinutes(self, minutes):
         summation = self.minutes + minutes
         if summation > 59 or summation < 0:
-            self.minutes = (self.minutes + minutes) % 60
             self.addHours(int((self.minutes + minutes) / 60))
+            self.minutes = (self.minutes + minutes) % 60
         else:
             self.minutes = self.minutes + minutes
     
