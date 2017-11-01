@@ -1,5 +1,6 @@
 from .utilities import unpackTimecode, findEvenSplit
 
+
 class LyricLine():
     """An object that holds a lyric line and it's time"""
     
@@ -9,7 +10,7 @@ class LyricLine():
         self.time = sum([(self.hours * 3600), (self.minutes * 60),
                           self.seconds, (self.milliseconds / 1000)])
         self.text = text
-        
+
     def shift(self, minutes=0, seconds=0, milliseconds=0):
         """Shift the timecode by the given amounts"""
         
@@ -137,4 +138,19 @@ class Lyrics(list):
             output.append(lrc)
         return '\n'.join(output).rstrip()
         
-            
+    def shift(self, **kwargs):
+        for i in range(len(self)):
+            self[i].shift(**kwargs)
+
+    def getDuration(self):
+        """Convert a time string "[[[DD:]HH:]MM:]SS" to seconds.
+        """
+        if self.length:
+            components = [int(i) for i in self.length.split(':')]
+            pad = 4 - len(components)
+            if pad < 0:
+                raise ValueError('Too many components to match [[[DD:]HH:]MM:]SS')
+            components = [0] * pad + components
+            return sum(i * j for i, j in zip((86400, 3600, 60, 1), components))
+        else:
+            return self[-1].time
