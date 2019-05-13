@@ -8,7 +8,7 @@ def text_to_vector(text):
     words = WORD.findall(
         re.sub('[?|$|.|!|,|[|\]|(|)|\']', '',
                re.sub('\(.*\)', '',
-                      re.sub(ur'\p{P}+', '',
+                      re.sub(u'\p{P}+', '',
                              re.sub('<[^<]+?>', '', re.sub('<br\s*/?>|-|_', ' ', text.lower()
                                                            )
                                     )
